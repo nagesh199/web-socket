@@ -18,11 +18,20 @@ useEffect(()=>{
       setMoney(payload.userdata[0].money)
     })
   }
-  console.log(data);
-  console.log(money)
+  const purchase=(mon)=>{
+    setMoney(money-mon.price);
+    socket.emit("purchase" , mon.price)
+  }
+
+  const sell = (mon)=>{
+    setMoney(money+mon.price);
+    socket.emit("sell",mon.price)
+  }
+ //console.log(money)
   return (
     <div className={styles.main}>
-        <h1>socket</h1>
+
+        <h1>Total money is {money}</h1>
         <table>
            <thead>
              <tr className={styles.tr}>
@@ -41,8 +50,8 @@ useEffect(()=>{
                  <td>{el.qty}</td>
                  <td>{el.price}</td>
                  <td>{el.country}</td>
-                 <td>Buy</td>
-                 <td>Sell</td>
+                 <td onClick={()=>purchase(el)}>Buy</td>
+                 <td onClick={()=>sell(el)}>Sell</td>
                </tr>
              ))}
            </tbody>
